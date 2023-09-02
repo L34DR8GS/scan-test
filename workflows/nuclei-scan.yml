@@ -1,0 +1,24 @@
+name: Nuclei Vulnerability Scan
+
+on:
+  workflow_run:
+    workflows: ["Nuclei Vulnerability Scan Workflow"]
+    types:
+      - completed
+
+jobs:        
+  nuclei-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Nuclei - Vulnerability Scan
+        uses: projectdiscovery/nuclei-action@v1.0.7
+            
+        with:
+          target: ${{ secrets.NUCLEI_TEMPLATES }}
+          target-url: ${{ secrets.NUCLEI_TARGET_URL }}
+
+      # Add steps to process the Nuclei results here.
